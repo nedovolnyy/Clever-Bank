@@ -3,12 +3,64 @@
  */
 package CleverBank;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import CleverBank.BusinessLogic.Services.BankService;
+import CleverBank.BusinessLogic.Services.BillService;
+import CleverBank.BusinessLogic.Services.UserService;
+import CleverBank.DataAccess.Repositories.BankRepository;
+import CleverBank.DataAccess.Repositories.BillRepository;
+import CleverBank.DataAccess.Repositories.UserRepository;
+import Common.Entities.Bill;
+import Common.Entities.Comparators.BillsComparator;
+import Common.JDBC.DatabaseContext;
+import Common.JDBC.Interfaces.IDatabaseContext;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Scanner;
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+public class App {    
+    
+    public static void main(String[] args) throws SQLException, IOException {
+        YamlReader reader = new YamlReader();
+        var in = new Scanner(System.in);
+        
+        Configuration read = reader.read("src/main/resources/Configuration.yml", Configuration.class);
+        
+        IDatabaseContext DatabaseContext = new DatabaseContext(read.postgresql.get("db.url"),read.postgresql.get("db.user"),read.postgresql.get("db.password"));
+
+        var bills = new BillService( new BillRepository(DatabaseContext)).GetAll();
+        
+        Collections.sort(bills, new BillsComparator());
+        
+        System.out.println("\tWelcome to Bill's Management!\n");
+        System.out.println("Choice bill for +/- balance:\n");
+        for (var bill : bills){
+            System.out.println(bill.getId() + " | " +
+                    new UserService(new UserRepository(DatabaseContext)).GetById(bill.getUserId()).getFullName() + " | " +
+                    new BankService(new BankRepository(DatabaseContext)).GetById(bill.getBankId()).getName() + " | " +
+                    bill.getBalance());
+    }
+        
+        System.out.print("Input a Bill's identifictor: ");
+        int billId = in.nextInt() - 1;
+        System.out.println(bills.get(billId).getId() + " | " +
+                    new UserService(new UserRepository(DatabaseContext)).GetById(bills.get(billId).getUserId()).getFullName() + " | " +
+                    new BankService(new BankRepository(DatabaseContext)).GetById(bills.get(billId).getBankId()).getName() + " | " +
+                    bills.get(billId).getBalance());
+        
+        System.out.printf("Correnct balance: ");
+        double correctBalance = in.nextDouble();
+        Bill updatedBill = new Bill(
+                bills.get(billId).getId(), 
+                bills.get(billId).getBankId(), 
+                bills.get(billId).getUserId(), 
+                bills.get(billId).getBalance() + correctBalance);
+        
+        new BillService(new BillRepository(DatabaseContext)).Update(updatedBill);
+        
+        System.out.printf("Correnct balance: %f\n", new BillService(new BillRepository(DatabaseContext)).GetById(billId + 1).getBalance());
+        
+        
+        in.close();
     }
 }
