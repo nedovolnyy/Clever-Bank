@@ -34,7 +34,7 @@ public class UserRepositoryTests {
       .withDatabaseName("TestCleverUserDB")
       .withUsername("postgres")
       .withPassword("postgrespw")
-      .withInitScript("test.sql")
+      .withInitScript("CleverBankDB.sql")
       .withTmpFs(singletonMap("/var/lib/postgresql/data", "rw"));
     
     private static IDatabaseContext databaseContext;
@@ -75,7 +75,7 @@ public class UserRepositoryTests {
             
             // act
             _userRepository.Update(expectedUser);
-            var actualUser = _userRepository.GetById(expectedUser.Id);
+            var actualUser = _userRepository.GetById(expectedUser.id);
 
             // assert
             assertThat(tuple(actualUser.getId(), actualUser.getFullName()))

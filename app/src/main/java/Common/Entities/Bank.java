@@ -10,11 +10,11 @@ package Common.Entities;
  */
 public class Bank extends BaseEntity{
     public Bank(int id, String name){
-        Id = id;
-        Name = name;
+        this.id = id;
+        this.name = name;
     }
     
-    String Name;
-    public String getName() { return this.Name; };
-    private void setName(String Name) { this.Name = Name; };
+    String name;
+    public String getName() { return this.name; };
+    private void setName(String name) { this.name = name; };
 }

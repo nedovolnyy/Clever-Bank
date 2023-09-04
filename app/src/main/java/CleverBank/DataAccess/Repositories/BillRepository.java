@@ -26,14 +26,16 @@ public class BillRepository extends BaseRepository<Bill>{
         @Override
         protected String GetParamsForInsert(Bill entity)
         {
-            return "INSERT INTO public.bill (\"bankId\", \"userId\", balance, currency, \"dateOfOpening\", \"dateOfExpiration\", iban) VALUES (" + 
+            return "INSERT INTO public.bill (\"bankId\", \"userId\", balance, currency," +
+                    "\"dateOfOpening\", \"dateOfExpiration\", iban, \"isGetPercent\") VALUES (" + 
                     entity.getBankId() + ", " +
                     entity.getUserId() + ", " +
                     entity.getBalance() + ", " +
                     "'" + entity.getCurrency() + "', " +
                     "'" + entity.getDateOfOpening() + "', " +
                     "'" + entity.getDateOfExpiration() + "', " +
-                    "'" + entity.getIBAN() + "');";
+                    "'" + entity.getIban() + "', " +
+                    entity.getIsGetPercent()+ ");";
         }
 
         @Override
@@ -45,7 +47,8 @@ public class BillRepository extends BaseRepository<Bill>{
                     ", currency = '" + entity.getCurrency() + "'" +
                     ", \"dateOfOpening\" = '" + entity.getDateOfOpening() + "'" +
                     ", \"dateOfExpiration\" = '" + entity.getDateOfExpiration() + "'" +
-                    ", iban = '" + entity.getIBAN() + "'" +
+                    ", iban = '" + entity.getIban()+ "'" +
+                    ", \"isGetPercent\" = " + entity.getIsGetPercent() +
                    " WHERE id = " + entity.getId();
         }
 
@@ -58,13 +61,13 @@ public class BillRepository extends BaseRepository<Bill>{
         @Override
         protected String GetParamsForGetById(int id)
         {
-            return "SELECT id, \"bankId\", \"userId\", balance, currency, \"dateOfOpening\", \"dateOfExpiration\", iban FROM public.bill WHERE id = " + id;
+            return "SELECT id, \"bankId\", \"userId\", balance, currency, \"dateOfOpening\", \"dateOfExpiration\", iban, \"isGetPercent\" FROM public.bill WHERE id = " + id;
         }
 
         @Override
         protected String GetAllCommandParameters()
         {
-            return "SELECT id, \"bankId\", \"userId\", balance, currency, \"dateOfOpening\", \"dateOfExpiration\", iban FROM public.bill";
+            return "SELECT id, \"bankId\", \"userId\", balance, currency, \"dateOfOpening\", \"dateOfExpiration\", iban, \"isGetPercent\" FROM public.bill";
         }
 
         /*
@@ -95,7 +98,8 @@ public class BillRepository extends BaseRepository<Bill>{
             Date dateOfOpening = resultSet.getDate("dateOfOpening");
             Date dateOfExpiration = resultSet.getDate("dateOfExpiration");
             String iban = resultSet.getString("iban");
-            return new Bill(id, bankId, userId, balance, currency, dateOfOpening, dateOfExpiration, iban);
+            boolean isGetPercent = resultSet.getBoolean("isGetPercent");
+            return new Bill(id, bankId, userId, balance, currency, dateOfOpening, dateOfExpiration, iban, isGetPercent);
         }
 
         @Override
@@ -114,7 +118,8 @@ public class BillRepository extends BaseRepository<Bill>{
                     Date dateOfOpening = resultSet.getDate("dateOfOpening");
                     Date dateOfExpiration = resultSet.getDate("dateOfExpiration");
                     String iban = resultSet.getString("iban");
-                    var bill = new Bill(id, bankId, userId, balance, currency, dateOfOpening, dateOfExpiration, iban);
+                    boolean isGetPercent = resultSet.getBoolean("isGetPercent");
+                    var bill = new Bill(id, bankId, userId, balance, currency, dateOfOpening, dateOfExpiration, iban, isGetPercent);
                     bills.add(bill);
                 }
             }

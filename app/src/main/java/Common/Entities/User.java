@@ -10,11 +10,11 @@ package Common.Entities;
  */
 public class User extends BaseEntity{
     public User(int id, String fullName){
-        Id = id;
-        FullName = fullName;
+        this.id = id;
+        this.fullName = fullName;
     }
     
-    String FullName;
-    public String getFullName() { return this.FullName; };
-    private void setFullName(String FullName) { this.FullName = FullName; };
+    String fullName;
+    public String getFullName() { return this.fullName; };
+    private void setFullName(String fullName) { this.fullName = fullName; };
 }

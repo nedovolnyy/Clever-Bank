@@ -35,7 +35,7 @@ public class BankServiceTests {
       .withDatabaseName("TestCleverBankDB")
       .withUsername("postgres")
       .withPassword("postgrespw")
-      .withInitScript("test.sql")
+      .withInitScript("CleverBankDB.sql")
       .withTmpFs(singletonMap("/var/lib/postgresql/data", "rw"));
     
     private static IDatabaseContext databaseContext;
@@ -76,7 +76,7 @@ public class BankServiceTests {
             
             // act
             _bankService.Update(expectedBank);
-            var actualBank = _bankService.GetById(expectedBank.Id);
+            var actualBank = _bankService.GetById(expectedBank.id);
 
             // assert
             assertThat(tuple(actualBank.getId(), actualBank.getName()))

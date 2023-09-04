@@ -35,7 +35,7 @@ public class BillRepositoryTests {
       .withDatabaseName("TestCleverBillDB")
       .withUsername("postgres")
       .withPassword("postgrespw")
-      .withInitScript("test.sql")
+      .withInitScript("CleverBankDB.sql")
       .withTmpFs(singletonMap("/var/lib/postgresql/data", "rw"));
     
     private static IDatabaseContext databaseContext;
@@ -52,7 +52,7 @@ public class BillRepositoryTests {
         {
             // arrange
             var billDbSetBeforeInsert = _billRepository.GetAll();
-            var expectedBill = new Bill(0, 2, 2, 55.4, "BYN", Date.valueOf("2023-09-01"), Date.valueOf("2028-09-01"), "BY44900000000000000000005578");
+            var expectedBill = new Bill(0, 2, 2, 55.4, "BYN", Date.valueOf("2023-09-01"), Date.valueOf("2028-09-01"), "BY44900000000000000000005578", false);
 
             // act
             _billRepository.Insert(expectedBill);
@@ -61,32 +61,36 @@ public class BillRepositoryTests {
             // assert
             assertThat(billDbSetBeforeInsert)
                     .extracting(Bill::getBankId, Bill::getUserId, Bill::getBalance, Bill::getCurrency,
-                                Bill::getDateOfOpening, Bill::getDateOfExpiration, Bill::getIBAN)
+                                Bill::getDateOfOpening, Bill::getDateOfExpiration, Bill::getIban, Bill::getIsGetPercent)
                     .doesNotContain(tuple(expectedBill.getBankId(), expectedBill.getUserId(), expectedBill.getBalance(),
-                          expectedBill.getCurrency(), expectedBill.getDateOfOpening(), expectedBill.getDateOfExpiration(), expectedBill.getIBAN()));
+                          expectedBill.getCurrency(), expectedBill.getDateOfOpening(), expectedBill.getDateOfExpiration(),
+                          expectedBill.getIban(), expectedBill.getIsGetPercent()));
             
             assertThat(billDbSetAfterInsert)
                     .extracting(Bill::getBankId, Bill::getUserId, Bill::getBalance, Bill::getCurrency,
-                                Bill::getDateOfOpening, Bill::getDateOfExpiration, Bill::getIBAN)
+                                Bill::getDateOfOpening, Bill::getDateOfExpiration, Bill::getIban, Bill::getIsGetPercent)
                     .contains(tuple(expectedBill.getBankId(), expectedBill.getUserId(), expectedBill.getBalance(),
-                          expectedBill.getCurrency(), expectedBill.getDateOfOpening(), expectedBill.getDateOfExpiration(), expectedBill.getIBAN()));
+                          expectedBill.getCurrency(), expectedBill.getDateOfOpening(), expectedBill.getDateOfExpiration(),
+                          expectedBill.getIban(), expectedBill.getIsGetPercent()));
         }
     
     @Test
     public void Update_WhenUpdateBill_ShouldBeEqualSameBill() throws SQLException
         {
             // arrange
-            var expectedBill = new Bill(1, 2, 2, 55.4F, "BYN", Date.valueOf("2023-09-01"), Date.valueOf("2028-09-01"), "BY44900000000000000000005578");
+            var expectedBill = new Bill(1, 2, 2, 55.4F, "BYN", Date.valueOf("2023-09-01"), Date.valueOf("2028-09-01"), "BY44900000000000000000005578", false);
             
             // act
             _billRepository.Update(expectedBill);
-            var actualBill = _billRepository.GetById(expectedBill.Id);
+            var actualBill = _billRepository.GetById(expectedBill.id);
 
             // assert
             assertThat(tuple(actualBill.getId(),actualBill.getBankId(), actualBill.getUserId(), actualBill.getBalance(),
-                          actualBill.getCurrency(), actualBill.getDateOfOpening(), actualBill.getDateOfExpiration(), actualBill.getIBAN()))
+                          actualBill.getCurrency(), actualBill.getDateOfOpening(), actualBill.getDateOfExpiration(),
+                          actualBill.getIban(), actualBill.getIsGetPercent()))
                 .isEqualTo(tuple(expectedBill.getId(), expectedBill.getBankId(), expectedBill.getUserId(), expectedBill.getBalance(),
-                          expectedBill.getCurrency(), expectedBill.getDateOfOpening(), expectedBill.getDateOfExpiration(), expectedBill.getIBAN()));
+                          expectedBill.getCurrency(), expectedBill.getDateOfOpening(), expectedBill.getDateOfExpiration(),
+                          expectedBill.getIban(), actualBill.getIsGetPercent()));
         }
     
     @Test
@@ -125,8 +129,9 @@ public class BillRepositoryTests {
             // assert
             assertThat(actualBillDbSet)
                     .extracting(Bill::getId, Bill::getBankId, Bill::getUserId, Bill::getBalance, Bill::getCurrency,
-                                Bill::getDateOfOpening, Bill::getDateOfExpiration, Bill::getIBAN)
+                                Bill::getDateOfOpening, Bill::getDateOfExpiration, Bill::getIban, Bill::getIsGetPercent)
                     .contains(tuple(expectedBill.getId(), expectedBill.getBankId(), expectedBill.getUserId(), expectedBill.getBalance(),
-                          expectedBill.getCurrency(), expectedBill.getDateOfOpening(), expectedBill.getDateOfExpiration(), expectedBill.getIBAN()));
+                          expectedBill.getCurrency(), expectedBill.getDateOfOpening(), expectedBill.getDateOfExpiration(),
+                          expectedBill.getIban(), expectedBill.getIsGetPercent()));
         }
 }

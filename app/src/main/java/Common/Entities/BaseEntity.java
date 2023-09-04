@@ -9,8 +9,8 @@ package Common.Entities;
  * @author AKrot
  */
 public class BaseEntity {
-        public int Id;
-        public int getId() { return this.Id; };
-        protected void setId(int Id) { this.Id = Id; };
+        public int id;
+        public int getId() { return this.id; };
+        protected void setId(int id) { this.id = id; };
 
 }

@@ -12,4 +12,5 @@ import java.util.Map;
  */
 public class Configuration {
     public Map<String,String> postgresql;
+    public Map<String,String> cleverBank;
 }

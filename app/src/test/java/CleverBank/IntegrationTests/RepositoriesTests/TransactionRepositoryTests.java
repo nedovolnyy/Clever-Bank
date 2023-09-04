@@ -35,7 +35,7 @@ public class TransactionRepositoryTests {
       .withDatabaseName("TestCleverTransactionDB")
       .withUsername("postgres")
       .withPassword("postgrespw")
-      .withInitScript("test.sql")
+      .withInitScript("CleverBankDB.sql")
       .withTmpFs(singletonMap("/var/lib/postgresql/data", "rw"));
     
     private static IDatabaseContext databaseContext;
@@ -84,7 +84,7 @@ public class TransactionRepositoryTests {
             
             // act
             _transactionRepository.Update(expectedTransaction);
-            var actualTransaction = _transactionRepository.GetById(expectedTransaction.Id);
+            var actualTransaction = _transactionRepository.GetById(expectedTransaction.id);
 
             // assert
             assertThat(tuple(actualTransaction.getId(), actualTransaction.getTypeOfTransaction(), actualTransaction.getTimeOfTransaction(),

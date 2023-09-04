@@ -16,7 +16,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-
 --
 -- Name: bank; Type: TABLE; Schema: public; Owner: -
 --
@@ -58,7 +57,8 @@ CREATE TABLE public.bill (
     currency character varying(3) NOT NULL,
     "dateOfOpening" date NOT NULL,
     "dateOfExpiration" date NOT NULL,
-    iban character varying(28) NOT NULL
+    iban character varying(28) NOT NULL,
+    "isGetPercent" boolean DEFAULT false NOT NULL
 );
 
 
@@ -291,30 +291,30 @@ INSERT INTO public.bank (id, name) VALUES (5, 'Paritet bank');
 -- Data for Name: bill; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (1, 1, 1, 78.21, 'BYN', '2016-02-01', '2024-02-01', 'BY44800000000000000000005465');
-INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (2, 1, 2, -11.21, 'USD', '2017-03-01', '2025-03-01', 'BY44800000000000000000002512');
-INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (4, 5, 2, 3, 'BYN', '2015-02-01', '2024-02-01', 'BY45800000000000000000002323');
-INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (5, 2, 2, 2.12, 'BYN', '2018-08-01', '2027-08-01', 'BY43800000000000000000002242');
-INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (3, 2, 1, 322.32, 'EUR', '2019-07-01', '2028-07-01', 'BY43800000000000000000005123');
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban, "isGetPercent") VALUES (1, 1, 1, 78.21, 'BYN', '2016-02-01', '2024-02-01', 'BY44800000000000000000005465', false);
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban, "isGetPercent") VALUES (2, 1, 2, 67.78999999999999, 'USD', '2017-03-01', '2025-03-01', 'BY44800000000000000000002512', false);
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban, "isGetPercent") VALUES (3, 2, 1, 342.32, 'EUR', '2019-07-01', '2028-07-01', 'BY43800000000000000000005123', false);
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban, "isGetPercent") VALUES (4, 5, 2, 3, 'BYN', '2015-02-01', '2024-02-01', 'BY45800000000000000000002323', false);
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban, "isGetPercent") VALUES (5, 2, 2, 2.12, 'BYN', '2018-08-01', '2027-08-01', 'BY43800000000000000000002242', false);
 
 
 --
 -- Data for Name: transaction; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.transaction (id, "typeOfTransaction", "timeOfTransaction", "senderBillId", "receiverBillId", summ, description) VALUES (1, 'Благотворительность', '2023-02-23 00:00:00+03', 2, 1, 22.5, 'На лечение');
-INSERT INTO public.transaction (id, "typeOfTransaction", "timeOfTransaction", "senderBillId", "receiverBillId", summ, description) VALUES (2, 'Перевод', '2023-02-22 00:00:00+03', 2, 2, 789.54, 'За корову');
+INSERT INTO public.transaction (id, "typeOfTransaction", "timeOfTransaction", "senderBillId", "receiverBillId", summ, description) VALUES (1, 'Р‘Р»Р°РіРѕС‚РІРѕСЂРёС‚РµР»СЊРЅРѕСЃС‚СЊ', '2023-02-23 00:00:00+03', 2, 1, 22.5, 'РќР° Р»РµС‡РµРЅРёРµ');
+INSERT INTO public.transaction (id, "typeOfTransaction", "timeOfTransaction", "senderBillId", "receiverBillId", summ, description) VALUES (2, 'РџРµСЂРµРІРѕРґ', '2023-02-22 00:00:00+03', 2, 2, 789.54, 'Р—Р° РєРѕСЂРѕРІСѓ');
 
 
 --
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public."user" (id, "fullName") VALUES (1, 'Валеев Руслан Ринатович');
-INSERT INTO public."user" (id, "fullName") VALUES (2, 'Смоляков Вячеслав Никифорович');
-INSERT INTO public."user" (id, "fullName") VALUES (3, 'Петров Валерий Федорович');
-INSERT INTO public."user" (id, "fullName") VALUES (4, 'Крот Артём Константинович');
-INSERT INTO public."user" (id, "fullName") VALUES (5, 'Савин Григорий Емельянович');
+INSERT INTO public."user" (id, "fullName") VALUES (1, 'Р’Р°Р»РµРµРІ Р СѓСЃР»Р°РЅ Р РёРЅР°С‚РѕРІРёС‡');
+INSERT INTO public."user" (id, "fullName") VALUES (2, 'РЎРјРѕР»СЏРєРѕРІ Р’СЏС‡РµСЃР»Р°РІ РќРёРєРёС„РѕСЂРѕРІРёС‡');
+INSERT INTO public."user" (id, "fullName") VALUES (3, 'РџРµС‚СЂРѕРІ Р’Р°Р»РµСЂРёР№ Р¤РµРґРѕСЂРѕРІРёС‡');
+INSERT INTO public."user" (id, "fullName") VALUES (4, 'РљСЂРѕС‚ РђСЂС‚С‘Рј РљРѕРЅСЃС‚Р°РЅС‚РёРЅРѕРІРёС‡');
+INSERT INTO public."user" (id, "fullName") VALUES (5, 'РЎР°РІРёРЅ Р“СЂРёРіРѕСЂРёР№ Р•РјРµР»СЊСЏРЅРѕРІРёС‡');
 
 
 --
@@ -440,3 +440,4 @@ ALTER TABLE ONLY public.bill
 --
 -- PostgreSQL database dump complete
 --
+

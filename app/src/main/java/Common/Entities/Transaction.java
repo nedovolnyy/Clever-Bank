@@ -13,37 +13,37 @@ import java.time.OffsetDateTime;
 public class Transaction extends BaseEntity{
     public Transaction(int id, String typeOfTransaction, OffsetDateTime timeOfTransaction,
             int senderBillId, int responserBillId, double summ, String description){
-        Id = id;
-        TypeOfTransaction = typeOfTransaction;
-        TimeOfTransaction = timeOfTransaction;
-        SenderBillId = senderBillId;
-        ReceiverBillId = responserBillId;
-        Summ = summ;
-        Description = description;
+        this.id = id;
+        this.typeOfTransaction = typeOfTransaction;
+        this.timeOfTransaction = timeOfTransaction;
+        this.senderBillId = senderBillId;
+        this.receiverBillId = responserBillId;
+        this.summ = summ;
+        this.description = description;
     }
     
-    String TypeOfTransaction;
-    public String getTypeOfTransaction() { return this.TypeOfTransaction; };
-    private void setTypeOfTransaction(String TypeOfTransaction) { this.TypeOfTransaction = TypeOfTransaction; };
+    String typeOfTransaction;
+    public String getTypeOfTransaction() { return this.typeOfTransaction; };
+    private void setTypeOfTransaction(String typeOfTransaction) { this.typeOfTransaction = typeOfTransaction; };
     
-    OffsetDateTime TimeOfTransaction;
-    public OffsetDateTime getTimeOfTransaction() { return this.TimeOfTransaction; };
-    private void setTimeOfTransaction(OffsetDateTime TimeOfTransaction) { this.TimeOfTransaction = TimeOfTransaction; };
+    OffsetDateTime timeOfTransaction;
+    public OffsetDateTime getTimeOfTransaction() { return this.timeOfTransaction; };
+    private void setTimeOfTransaction(OffsetDateTime timeOfTransaction) { this.timeOfTransaction = timeOfTransaction; };
     
-    int SenderBillId;
-    public int getSenderBillId() { return this.SenderBillId; };
-    private void setSenderBillId(int SenderBillId) { this.SenderBillId = SenderBillId; };
+    int senderBillId;
+    public int getSenderBillId() { return this.senderBillId; };
+    private void setSenderBillId(int senderBillId) { this.senderBillId = senderBillId; };
     
-    int ReceiverBillId;
-    public int getReceiverBillId() { return this.ReceiverBillId; };
-    private void setReceiverBillId(int ReceiverBillId) { this.ReceiverBillId = ReceiverBillId; };
+    int receiverBillId;
+    public int getReceiverBillId() { return this.receiverBillId; };
+    private void setReceiverBillId(int receiverBillId) { this.receiverBillId = receiverBillId; };
     
-    double Summ;
-    public double getSumm() { return this.Summ; };
-    private void setSumm(double Summ) { this.Summ = Summ; };
+    double summ;
+    public double getSumm() { return this.summ; };
+    private void setSumm(double summ) { this.summ = summ; };
     
-    String Description;
-    public String getDescription() { return this.Description; };
-    private void setDescription(String Description) { this.Description = Description; };
+    String description;
+    public String getDescription() { return this.description; };
+    private void setDescription(String description) { this.description = description; };
     
 }

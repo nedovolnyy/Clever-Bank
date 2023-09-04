@@ -12,42 +12,47 @@ import java.sql.Date;
  */
 public class Bill extends BaseEntity{
     public Bill(int id, int bankId, int userId, double balance, String currency,
-            Date dateOfOpening, Date dateOfExpiration, String iban){
-        Id = id;
-        BankId = bankId;
-        UserId = userId;
-        Balance = balance;
-        Currency = currency;
-        DateOfOpening = dateOfOpening;
-        DateOfExpiration = dateOfExpiration;
-        IBAN = iban;
+            Date dateOfOpening, Date dateOfExpiration, String iban, boolean isGetPercent){
+        this.id = id;
+        this.bankId = bankId;
+        this.userId = userId;
+        this.balance = balance;
+        this.currency = currency;
+        this.dateOfOpening = dateOfOpening;
+        this.dateOfExpiration = dateOfExpiration;
+        this.iban = iban;
+        this.isGetPercent = isGetPercent;
     }
     
-    int BankId;
-    public int getBankId() { return this.BankId; };
-    private void setBankId(int BankId) { this.BankId = BankId; };
+    int bankId;
+    public int getBankId() { return this.bankId; };
+    private void setBankId(int bankId) { this.bankId = bankId; };
     
-    int UserId;
-    public int getUserId() { return this.UserId; };
-    private void setUserId(int UserId) { this.UserId = UserId; };
+    int userId;
+    public int getUserId() { return this.userId; };
+    private void setUserId(int userId) { this.userId = userId; };
     
-    double Balance;
-    public double getBalance() { return this.Balance; };
-    private void setBalance(double Balance) { this.Balance = Balance; };
+    double balance;
+    public double getBalance() { return this.balance; };
+    private void setBalance(double balance) { this.balance = balance; };
     
-    String Currency;
-    public String getCurrency() { return this.Currency; };
-    private void setCurrency(String Currency) { this.Currency = Currency; };
+    String currency;
+    public String getCurrency() { return this.currency; };
+    private void setCurrency(String currency) { this.currency = currency; };
     
-    Date DateOfOpening;
-    public Date getDateOfOpening() { return this.DateOfOpening; };
-    private void setDateOfOpening(Date DateOfOpening) { this.DateOfOpening = DateOfOpening; };
+    Date dateOfOpening;
+    public Date getDateOfOpening() { return this.dateOfOpening; };
+    private void setDateOfOpening(Date dateOfOpening) { this.dateOfOpening = dateOfOpening; };
     
-    Date DateOfExpiration;
-    public Date getDateOfExpiration() { return this.DateOfExpiration; };
-    private void setDateOfExpiration(Date DateOfExpiration) { this.DateOfExpiration = DateOfExpiration; };
+    Date dateOfExpiration;
+    public Date getDateOfExpiration() { return this.dateOfExpiration; };
+    private void setDateOfExpiration(Date dateOfExpiration) { this.dateOfExpiration = dateOfExpiration; };
     
-    String IBAN;
-    public String getIBAN() { return this.IBAN; };
-    private void setIBAN(String IBAN) { this.IBAN = IBAN; };
+    String iban;
+    public String getIban() { return this.iban; };
+    private void setIban(String iban) { this.iban = iban; };
+    
+    boolean isGetPercent;
+    public boolean getIsGetPercent() { return this.isGetPercent; };
+    private void setIsGetPercent(boolean isGetPercent) { this.isGetPercent = isGetPercent; };
 }
