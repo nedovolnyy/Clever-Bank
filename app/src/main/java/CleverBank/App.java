@@ -21,12 +21,11 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class App {    
     private static IDatabaseContext databaseContext;
     private static float percentOfDeposit;
+    private static boolean isNeedDoDeposit;
     
     private static void initializeConfigurationFile() throws IOException{
         YamlReader reader = new YamlReader();
@@ -36,6 +35,55 @@ public class App {
         percentOfDeposit = Float.parseFloat(read.cleverBank.get("percentOfDeposit"));
     }
     
+    public static void checkTimerForDepositPerccentAsync(long timeout) {
+        final Thread t = new Thread();
+        new Timer(true).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (t.isAlive()) {
+                    t.interrupt();
+                }
+                
+        if (LocalDate.now().getDayOfMonth() == YearMonth.now().atEndOfMonth().getDayOfMonth()){
+            isNeedDoDeposit = !isNeedDoDeposit;
+        }
+        else
+        {
+            if (isNeedDoDeposit)
+                {
+                    isNeedDoDeposit = !isNeedDoDeposit;
+                    try {
+                        addedDepositePercent();
+                    } catch (SQLException ex) {
+                    }
+                }
+        }
+        
+        checkTimerForDepositPerccentAsync(timeout);
+            }
+        }, timeout * 1000);
+        t.start();
+    }
+    
+    private static void addedDepositePercent() throws SQLException{
+        var billService = new BillService( new BillRepository(databaseContext));
+        var bills = billService.GetAll();
+        for ( var bill : bills){
+            var temporaryBill = new Bill(
+                bill.getId(), 
+                bill.getBankId(), 
+                bill.getUserId(),
+                bill.getBalance() * (1 + percentOfDeposit / 100), 
+                bill.getCurrency(), 
+                bill.getDateOfOpening(), 
+                bill.getDateOfExpiration(), 
+                bill.getIban(),
+                !bill.getIsGetPercent());
+            billService.Update(temporaryBill);
+            }
+        
+    }
+    
     private static void changeBalance() throws SQLException {
         var in = new Scanner(System.in);
 
@@ -43,7 +91,6 @@ public class App {
         
         Collections.sort(bills, new BillsComparator());
         
-        System.out.println("\tWelcome to Bill's Management!\n");
         System.out.println("Choice bill for +/- balance:\n");
         for (var bill : bills)
             System.out.println(bill.getId() + " | " +
@@ -82,55 +129,34 @@ public class App {
         
         in.close();
     }
-  
-    public static void checkTimerForDepositPerccentAsync(long timeout) {
-        final Thread t = new Thread();
-        new Timer(true).schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (t.isAlive()) {
-                    t.interrupt();
-                }
-        if (LocalDate.now().getDayOfMonth() == YearMonth.now().atEndOfMonth().getDayOfMonth()){
-                    try {
-                        addedDepositePercent();
-                    } catch (SQLException ex) {
-                    }
-        }
-        checkTimerForDepositPerccentAsync(timeout);
-            }
-        }, timeout * 1000);
-        // Start the thread.
-        t.start();
-    }
-    
-    private static void addedDepositePercent() throws SQLException{
-        var billService = new BillService( new BillRepository(databaseContext));
-        var bills = billService.GetAll();
-        for ( var bill : bills){
-            var temporaryBill = new Bill(
-                bill.getId(), 
-                bill.getBankId(), 
-                bill.getUserId(),
-                bill.getBalance() * (1 + percentOfDeposit / 100), 
-                bill.getCurrency(), 
-                bill.getDateOfOpening(), 
-                bill.getDateOfExpiration(), 
-                bill.getIban(),
-                !bill.getIsGetPercent());
-            billService.Update(temporaryBill);
-            }
-        
-    }
     
     public static void main(String[] args) throws SQLException, IOException, InterruptedException {
         initializeConfigurationFile();
+        checkTimerForDepositPerccentAsync(30);
 
         var in = new Scanner(System.in);        
         
-        checkTimerForDepositPerccentAsync(3);
+        System.out.println("\tWelcome to Bill's Management!\n");
+        System.out.println("1 - Change balance");
+        System.out.println("2 - ...(Sent balance)");
+        System.out.println("3 - ...");
+        System.out.println("0 - return 0");
         
-        int ids=in.nextInt();
+        int choice=in.nextInt();
+        
+        switch(choice){
+            case 1 -> changeBalance();
+            case 2 -> {
+                return;
+            }
+            case 3 -> {
+                return;
+            }
+            case 0 -> {
+                return;
+            }
+        }
+        
         in.close();        
     }
 }

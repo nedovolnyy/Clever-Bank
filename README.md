@@ -10,7 +10,6 @@ Task for Java Trainee at Clevertec 2023
         
 
 ## Possible Drawbacks/Concerns (What should reviewers look out for?)
-	- Don't realized console menu.
         - Нет метода передачи средств между счетами
         - Нет метода для формирования чека
         - Нет модульных тестов
