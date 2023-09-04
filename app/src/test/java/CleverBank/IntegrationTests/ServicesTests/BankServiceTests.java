@@ -90,7 +90,7 @@ public class BankServiceTests {
             var expectedCount = _bankService.GetAll().size() - 1;
 
             // act
-            _bankService.Delete(4);
+            _bankService.Delete(6);
             var actualCount = _bankService.GetAll().size();
 
             // assert

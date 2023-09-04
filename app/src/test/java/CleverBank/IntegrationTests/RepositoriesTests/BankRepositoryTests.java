@@ -89,7 +89,7 @@ public class BankRepositoryTests {
             var expectedCount = _bankRepository.GetAll().size() - 1;
 
             // act
-            _bankRepository.Delete(4);
+            _bankRepository.Delete(6);
             var actualCount = _bankRepository.GetAll().size();
 
             // assert

@@ -89,7 +89,7 @@ public class UserRepositoryTests {
             var expectedCount = _userRepository.GetAll().size() - 1;
 
             // act
-            _userRepository.Delete(4);
+            _userRepository.Delete(22);
             var actualCount = _userRepository.GetAll().size();
 
             // assert

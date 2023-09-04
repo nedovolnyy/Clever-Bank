@@ -90,7 +90,7 @@ public class UserServiceTests {
             var expectedCount = _userService.GetAll().size() - 1;
 
             // act
-            _userService.Delete(4);
+            _userService.Delete(22);
             var actualCount = _userService.GetAll().size();
 
             // assert
