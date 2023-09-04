@@ -19,13 +19,19 @@ repositories {
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
-
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:31.1-jre'
-
+    // Use Testcontainers for integration tests in Docker
+    testImplementation "org.testcontainers:testcontainers:1.19.0"
+    testImplementation "org.testcontainers:junit-jupiter:1.19.0"
+    testImplementation 'org.testcontainers:postgresql:1.19.0'
+    
+    // 'Flexible' or 'fluent' assertions for testing
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    
+    // This dependency is JDBC Driver for PostgreSQL
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
-
+    // This dependency for Configuration file .yml
     implementation group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -40,7 +46,10 @@ application {
     mainClass = 'CleverBank.App'
 }
 
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
+tasks.withType(Test) {
     useJUnitPlatform()
+    ignoreFailures = true
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }

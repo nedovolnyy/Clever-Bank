@@ -25,33 +25,32 @@ public class BankRepository extends BaseRepository<Bank>{
         @Override
         protected String GetParamsForInsert(Bank entity)
         {
-            return "INSERT INTO bank (name) VALUES (" + entity.getName() +", " +
-                   "SELECT CAST (SCOPE_IDENTITY() AS INT)";
+            return "INSERT INTO public.bank (name) VALUES ('" + entity.getName() +"');";
         }
 
         @Override
         protected String GetParamsForUpdate(Bank entity)
         {
-            return "UPDATE bank SET name = " + entity.getName() +
+            return "UPDATE public.bank SET name = '" + entity.getName() + "'" +
                    " WHERE id = " + entity.getId();
         }
 
         @Override
         protected String GetParamsForDelete(int id)
         {
-            return "DELETE FROM bank WHERE id = " + id;
+            return "DELETE FROM public.bank WHERE id = " + id;
         }
 
         @Override
         protected String GetParamsForGetById(int id)
         {
-            return "SELECT id, name FROM bank WHERE id = " + id;
+            return "SELECT id, name FROM public.bank WHERE id = " + id;
         }
 
         @Override
         protected String GetAllCommandParameters()
         {
-            return "SELECT id, name FROM bank";
+            return "SELECT id, name FROM public.bank";
         }
 
         /*

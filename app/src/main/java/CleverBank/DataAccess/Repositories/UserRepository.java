@@ -25,14 +25,13 @@ public class UserRepository extends BaseRepository<User>{
         @Override
         protected String GetParamsForInsert(User entity)
         {
-            return "INSERT INTO public.user (\"fullName\") VALUES (" + entity.getFullName() +", " +
-                   "SELECT CAST (SCOPE_IDENTITY() AS INT)";
+            return "INSERT INTO public.user (\"fullName\") VALUES ('" + entity.getFullName() +"');";
         }
 
         @Override
         protected String GetParamsForUpdate(User entity)
         {
-            return "UPDATE public.user SET \"fullName\" = " + entity.getFullName() +
+            return "UPDATE public.user SET \"fullName\" = '" + entity.getFullName() + "'" +
                    " WHERE id = " + entity.getId();
         }
 

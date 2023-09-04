@@ -1,0 +1,442 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.4
+-- Dumped by pg_dump version 15.4
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+
+--
+-- Name: bank; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.bank (
+    id bigint NOT NULL,
+    name character varying(200) NOT NULL
+);
+
+
+--
+-- Name: Bank_Id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."Bank_Id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Bank_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."Bank_Id_seq" OWNED BY public.bank.id;
+
+
+--
+-- Name: bill; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.bill (
+    id bigint NOT NULL,
+    "bankId" bigint NOT NULL,
+    "userId" bigint NOT NULL,
+    balance double precision NOT NULL,
+    currency character varying(3) NOT NULL,
+    "dateOfOpening" date NOT NULL,
+    "dateOfExpiration" date NOT NULL,
+    iban character varying(28) NOT NULL
+);
+
+
+--
+-- Name: Bill_BankId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."Bill_BankId_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Bill_BankId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."Bill_BankId_seq" OWNED BY public.bill."bankId";
+
+
+--
+-- Name: Bill_Id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."Bill_Id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Bill_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."Bill_Id_seq" OWNED BY public.bill.id;
+
+
+--
+-- Name: Bill_UserId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."Bill_UserId_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Bill_UserId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."Bill_UserId_seq" OWNED BY public.bill."userId";
+
+
+--
+-- Name: transaction; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.transaction (
+    id bigint NOT NULL,
+    "typeOfTransaction" character varying(50) NOT NULL,
+    "timeOfTransaction" timestamp with time zone NOT NULL,
+    "senderBillId" bigint NOT NULL,
+    "receiverBillId" bigint NOT NULL,
+    summ double precision NOT NULL,
+    description character varying(500)
+);
+
+
+--
+-- Name: Transaction_Id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."Transaction_Id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Transaction_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."Transaction_Id_seq" OWNED BY public.transaction.id;
+
+
+--
+-- Name: Transaction_ReceiverBillId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."Transaction_ReceiverBillId_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Transaction_ReceiverBillId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."Transaction_ReceiverBillId_seq" OWNED BY public.transaction."receiverBillId";
+
+
+--
+-- Name: Transaction_SenderBillId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."Transaction_SenderBillId_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Transaction_SenderBillId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."Transaction_SenderBillId_seq" OWNED BY public.transaction."senderBillId";
+
+
+--
+-- Name: user; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public."user" (
+    id bigint NOT NULL,
+    "fullName" character varying(200) NOT NULL
+);
+
+
+--
+-- Name: User_Id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."User_Id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: User_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."User_Id_seq" OWNED BY public."user".id;
+
+
+--
+-- Name: bank id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bank ALTER COLUMN id SET DEFAULT nextval('public."Bank_Id_seq"'::regclass);
+
+
+--
+-- Name: bill id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bill ALTER COLUMN id SET DEFAULT nextval('public."Bill_Id_seq"'::regclass);
+
+
+--
+-- Name: bill bankId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bill ALTER COLUMN "bankId" SET DEFAULT nextval('public."Bill_BankId_seq"'::regclass);
+
+
+--
+-- Name: bill userId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bill ALTER COLUMN "userId" SET DEFAULT nextval('public."Bill_UserId_seq"'::regclass);
+
+
+--
+-- Name: transaction id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.transaction ALTER COLUMN id SET DEFAULT nextval('public."Transaction_Id_seq"'::regclass);
+
+
+--
+-- Name: transaction senderBillId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.transaction ALTER COLUMN "senderBillId" SET DEFAULT nextval('public."Transaction_SenderBillId_seq"'::regclass);
+
+
+--
+-- Name: transaction receiverBillId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.transaction ALTER COLUMN "receiverBillId" SET DEFAULT nextval('public."Transaction_ReceiverBillId_seq"'::regclass);
+
+
+--
+-- Name: user id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."user" ALTER COLUMN id SET DEFAULT nextval('public."User_Id_seq"'::regclass);
+
+
+--
+-- Data for Name: bank; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+INSERT INTO public.bank (id, name) VALUES (1, 'Clever-Bank');
+INSERT INTO public.bank (id, name) VALUES (2, 'Priorbank');
+INSERT INTO public.bank (id, name) VALUES (3, 'Belagroprombank');
+INSERT INTO public.bank (id, name) VALUES (4, 'Belpromstroy bank');
+INSERT INTO public.bank (id, name) VALUES (5, 'Paritet bank');
+
+
+--
+-- Data for Name: bill; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (1, 1, 1, 78.21, 'BYN', '2016-02-01', '2024-02-01', 'BY44800000000000000000005465');
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (2, 1, 2, -11.21, 'USD', '2017-03-01', '2025-03-01', 'BY44800000000000000000002512');
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (4, 5, 2, 3, 'BYN', '2015-02-01', '2024-02-01', 'BY45800000000000000000002323');
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (5, 2, 2, 2.12, 'BYN', '2018-08-01', '2027-08-01', 'BY43800000000000000000002242');
+INSERT INTO public.bill (id, "bankId", "userId", balance, currency, "dateOfOpening", "dateOfExpiration", iban) VALUES (3, 2, 1, 322.32, 'EUR', '2019-07-01', '2028-07-01', 'BY43800000000000000000005123');
+
+
+--
+-- Data for Name: transaction; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+INSERT INTO public.transaction (id, "typeOfTransaction", "timeOfTransaction", "senderBillId", "receiverBillId", summ, description) VALUES (1, 'Благотворительность', '2023-02-23 00:00:00+03', 2, 1, 22.5, 'На лечение');
+INSERT INTO public.transaction (id, "typeOfTransaction", "timeOfTransaction", "senderBillId", "receiverBillId", summ, description) VALUES (2, 'Перевод', '2023-02-22 00:00:00+03', 2, 2, 789.54, 'За корову');
+
+
+--
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+INSERT INTO public."user" (id, "fullName") VALUES (1, 'Валеев Руслан Ринатович');
+INSERT INTO public."user" (id, "fullName") VALUES (2, 'Смоляков Вячеслав Никифорович');
+INSERT INTO public."user" (id, "fullName") VALUES (3, 'Петров Валерий Федорович');
+INSERT INTO public."user" (id, "fullName") VALUES (4, 'Крот Артём Константинович');
+INSERT INTO public."user" (id, "fullName") VALUES (5, 'Савин Григорий Емельянович');
+
+
+--
+-- Name: Bank_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."Bank_Id_seq"', 5, true);
+
+
+--
+-- Name: Bill_BankId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."Bill_BankId_seq"', 1, false);
+
+
+--
+-- Name: Bill_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."Bill_Id_seq"', 5, true);
+
+
+--
+-- Name: Bill_UserId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."Bill_UserId_seq"', 1, false);
+
+
+--
+-- Name: Transaction_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."Transaction_Id_seq"', 2, true);
+
+
+--
+-- Name: Transaction_ReceiverBillId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."Transaction_ReceiverBillId_seq"', 1, false);
+
+
+--
+-- Name: Transaction_SenderBillId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."Transaction_SenderBillId_seq"', 1, false);
+
+
+--
+-- Name: User_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."User_Id_seq"', 5, true);
+
+
+--
+-- Name: bank Bank_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bank
+    ADD CONSTRAINT "Bank_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: bill Bill_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bill
+    ADD CONSTRAINT "Bill_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: transaction Transaction_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.transaction
+    ADD CONSTRAINT "Transaction_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: user User_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."user"
+    ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: bill FK_Bank_Bill; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bill
+    ADD CONSTRAINT "FK_Bank_Bill" FOREIGN KEY ("bankId") REFERENCES public.bank(id);
+
+
+--
+-- Name: transaction FK_ReceiverBill_Transaction; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.transaction
+    ADD CONSTRAINT "FK_ReceiverBill_Transaction" FOREIGN KEY ("receiverBillId") REFERENCES public.bill(id);
+
+
+--
+-- Name: transaction FK_SenderBill_Transaction; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.transaction
+    ADD CONSTRAINT "FK_SenderBill_Transaction" FOREIGN KEY ("senderBillId") REFERENCES public.bill(id);
+
+
+--
+-- Name: bill FK_User_Bill; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bill
+    ADD CONSTRAINT "FK_User_Bill" FOREIGN KEY ("userId") REFERENCES public."user"(id);
+
+
+--
+-- PostgreSQL database dump complete
+--

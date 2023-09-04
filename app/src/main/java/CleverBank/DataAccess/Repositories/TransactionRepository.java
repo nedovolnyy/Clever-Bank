@@ -28,21 +28,20 @@ public class TransactionRepository extends BaseRepository<Transaction>{
         @Override
         protected String GetParamsForInsert(Transaction entity)
         {
-            return "INSERT INTO public.transaction (\"typeOfTransaction\", \"timeOfTransaction\", \"senderBillId\", \"receiverBillId\", summ, description) VALUES (" + 
-                    entity.getTypeOfTransaction() + ", " + entity.getTimeOfTransaction() + ", " + entity.getSenderBillId() + ", " +
-                    entity.getReceiverBillId() + ", " + entity.getSumm() + ", " + entity.getDescription() + ", " + 
-                   "SELECT CAST (SCOPE_IDENTITY() AS INT)";
+            return "INSERT INTO public.transaction (\"typeOfTransaction\", \"timeOfTransaction\", \"senderBillId\", \"receiverBillId\", summ, description) VALUES ('" + 
+                    entity.getTypeOfTransaction() + "', '" + entity.getTimeOfTransaction() + "', " + entity.getSenderBillId() + ", " +
+                    entity.getReceiverBillId() + ", " + entity.getSumm() + ", '" + entity.getDescription() + "');";
         }
 
         @Override
         protected String GetParamsForUpdate(Transaction entity)
         {
-            return "UPDATE public.transaction SET \"typeOfTransaction\" = " + entity.getTypeOfTransaction() +
-                    ", \"timeOfTransaction\" = " + entity.getTimeOfTransaction() +
+            return "UPDATE public.transaction SET \"typeOfTransaction\" = '" + entity.getTypeOfTransaction() + "'" +
+                    ", \"timeOfTransaction\" = '" + entity.getTimeOfTransaction() + "'" +
                     ", \"senderBillId\" = " + entity.getSenderBillId() +
                     ", \"receiverBillId\" = " + entity.getReceiverBillId() +
                     ", summ = " + entity.getSumm() +
-                    ", description = " + entity.getDescription() +
+                    ", description = '" + entity.getDescription() + "'" +
                    " WHERE id = " + entity.getId();
         }
 
@@ -55,7 +54,7 @@ public class TransactionRepository extends BaseRepository<Transaction>{
         @Override
         protected String GetParamsForGetById(int id)
         {
-            return "SELECT id, \"typeOfTransaction, \"timeOfTransaction\", \"senderBillId\", \"receiverBillId\", summ, description FROM public.transaction WHERE id = " + id;
+            return "SELECT id, \"typeOfTransaction\", \"timeOfTransaction\", \"senderBillId\", \"receiverBillId\", summ, description FROM public.transaction WHERE id = " + id;
         }
 
         @Override

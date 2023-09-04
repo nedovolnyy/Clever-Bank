@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
  * @author AKrot
  */
 public class Transaction extends BaseEntity{
-    public Transaction(int id, String typeOfTransaction, OffsetDateTime timeOfTransaction, //int senderBankId, int responserBankId,
+    public Transaction(int id, String typeOfTransaction, OffsetDateTime timeOfTransaction,
             int senderBillId, int responserBillId, double summ, String description){
         Id = id;
         TypeOfTransaction = typeOfTransaction;

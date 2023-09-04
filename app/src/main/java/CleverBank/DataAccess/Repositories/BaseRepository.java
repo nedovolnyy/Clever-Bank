@@ -27,6 +27,7 @@ abstract class BaseRepository<T extends BaseEntity> implements IRepository<T>{
      * 
      * @param entity Entity
      */
+    @Override
     public int Insert(T entity) throws SQLException
         {
             int i;
@@ -42,6 +43,7 @@ abstract class BaseRepository<T extends BaseEntity> implements IRepository<T>{
      * 
      * @param entity Entity
      */
+    @Override
     public int Update(T entity) throws SQLException
         {
             int i;
@@ -56,6 +58,7 @@ abstract class BaseRepository<T extends BaseEntity> implements IRepository<T>{
      * 
      * @param id ID of Entity
      */
+    @Override
     public int Delete(int id) throws SQLException
         {
             int i;
@@ -71,6 +74,7 @@ abstract class BaseRepository<T extends BaseEntity> implements IRepository<T>{
      * @param id ID of Entity
      * @return BaseEntity
      */
+    @Override
     public T GetById(int id) throws SQLException
         {
             
@@ -83,6 +87,7 @@ abstract class BaseRepository<T extends BaseEntity> implements IRepository<T>{
      * 
      * @return List of BaseEntities
      */
+    @Override
     public List<T> GetAll() throws SQLException
         {
             var statement = _databaseContext.getConnection().createStatement();

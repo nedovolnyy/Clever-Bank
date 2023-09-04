@@ -38,7 +38,11 @@ public class App {
             System.out.println(bill.getId() + " | " +
                     new UserService(new UserRepository(DatabaseContext)).GetById(bill.getUserId()).getFullName() + " | " +
                     new BankService(new BankRepository(DatabaseContext)).GetById(bill.getBankId()).getName() + " | " +
-                    bill.getBalance());
+                    bill.getBalance() + " | " +
+                    bill.getCurrency() + " | " +
+                    bill.getDateOfOpening() + " | " +
+                    bill.getDateOfExpiration() + " | " +
+                    bill.getIBAN());
     }
         
         System.out.print("Input a Bill's identifictor: ");
@@ -53,8 +57,12 @@ public class App {
         Bill updatedBill = new Bill(
                 bills.get(billId).getId(), 
                 bills.get(billId).getBankId(), 
-                bills.get(billId).getUserId(), 
-                bills.get(billId).getBalance() + correctBalance);
+                bills.get(billId).getUserId(),
+                bills.get(billId).getBalance() + correctBalance, 
+                bills.get(billId).getCurrency(), 
+                bills.get(billId).getDateOfOpening(), 
+                bills.get(billId).getDateOfExpiration(), 
+                bills.get(billId).getIBAN());
         
         new BillService(new BillRepository(DatabaseContext)).Update(updatedBill);
         

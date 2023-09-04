@@ -6,10 +6,10 @@ package CleverBank.DataAccess.Repositories;
 
 import Common.Entities.Bill;
 import Common.JDBC.Interfaces.IDatabaseContext;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 /**
  *
@@ -26,38 +26,45 @@ public class BillRepository extends BaseRepository<Bill>{
         @Override
         protected String GetParamsForInsert(Bill entity)
         {
-            return "INSERT INTO bill (\"bankId\", \"userId\", balance) VALUES (" + 
-                    entity.getBankId() +", " +
-                    entity.getUserId() +", " +
-                    entity.getBalance()+", " +
-                   "SELECT CAST (SCOPE_IDENTITY() AS INT)";
+            return "INSERT INTO public.bill (\"bankId\", \"userId\", balance, currency, \"dateOfOpening\", \"dateOfExpiration\", iban) VALUES (" + 
+                    entity.getBankId() + ", " +
+                    entity.getUserId() + ", " +
+                    entity.getBalance() + ", " +
+                    "'" + entity.getCurrency() + "', " +
+                    "'" + entity.getDateOfOpening() + "', " +
+                    "'" + entity.getDateOfExpiration() + "', " +
+                    "'" + entity.getIBAN() + "');";
         }
 
         @Override
         protected String GetParamsForUpdate(Bill entity)
         {
-            return "UPDATE bill SET \"bankId\" = " + entity.getBankId() +
+            return "UPDATE public.bill SET \"bankId\" = " + entity.getBankId() +
                     ", \"userId\" = " + entity.getUserId() +
-                    ", \"balance\" = " + entity.getBalance()+
+                    ", balance = " + entity.getBalance() +
+                    ", currency = '" + entity.getCurrency() + "'" +
+                    ", \"dateOfOpening\" = '" + entity.getDateOfOpening() + "'" +
+                    ", \"dateOfExpiration\" = '" + entity.getDateOfExpiration() + "'" +
+                    ", iban = '" + entity.getIBAN() + "'" +
                    " WHERE id = " + entity.getId();
         }
 
         @Override
         protected String GetParamsForDelete(int id)
         {
-            return "DELETE FROM bill WHERE id = " + id;
+            return "DELETE FROM public.bill WHERE id = " + id;
         }
 
         @Override
         protected String GetParamsForGetById(int id)
         {
-            return "SELECT id, \"bankId\", \"userId\", balance FROM bill WHERE id = " + id;
+            return "SELECT id, \"bankId\", \"userId\", balance, currency, \"dateOfOpening\", \"dateOfExpiration\", iban FROM public.bill WHERE id = " + id;
         }
 
         @Override
         protected String GetAllCommandParameters()
         {
-            return "SELECT id, \"bankId\", \"userId\", balance FROM bill";
+            return "SELECT id, \"bankId\", \"userId\", balance, currency, \"dateOfOpening\", \"dateOfExpiration\", iban FROM public.bill";
         }
 
         /*
@@ -84,7 +91,11 @@ public class BillRepository extends BaseRepository<Bill>{
             int bankId = resultSet.getInt("bankId");
             int userId = resultSet.getInt("userId");
             double balance = resultSet.getDouble("balance");
-            return new Bill(id, bankId, userId, balance);
+            String currency = resultSet.getString("currency");
+            Date dateOfOpening = resultSet.getDate("dateOfOpening");
+            Date dateOfExpiration = resultSet.getDate("dateOfExpiration");
+            String iban = resultSet.getString("iban");
+            return new Bill(id, bankId, userId, balance, currency, dateOfOpening, dateOfExpiration, iban);
         }
 
         @Override
@@ -99,7 +110,11 @@ public class BillRepository extends BaseRepository<Bill>{
                     int bankId = resultSet.getInt("bankId");
                     int userId = resultSet.getInt("userId");
                     double balance = resultSet.getDouble("balance");
-                    var bill = new Bill(id, bankId, userId, balance);
+                    String currency = resultSet.getString("currency");
+                    Date dateOfOpening = resultSet.getDate("dateOfOpening");
+                    Date dateOfExpiration = resultSet.getDate("dateOfExpiration");
+                    String iban = resultSet.getString("iban");
+                    var bill = new Bill(id, bankId, userId, balance, currency, dateOfOpening, dateOfExpiration, iban);
                     bills.add(bill);
                 }
             }
