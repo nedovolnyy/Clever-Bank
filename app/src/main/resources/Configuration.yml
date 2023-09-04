@@ -1,0 +1,7 @@
+postgresql:
+    db.url: jdbc:postgresql://127.0.0.1:5432/CleverBankDB
+    db.user: postgres
+    db.password: 1QA3ED5TG
+    
+cleverBank:
+    percentOfDeposit: 1
